@@ -43,11 +43,9 @@ def write_hero_info_to_csv(hero_info: Any, csv_name: str) -> None:
         None
     """
     CSV_PATH.mkdir(exist_ok=True)
-    df = pd.json_normalize(hero_info)
     csv_file_path = CSV_PATH / f'{csv_name}.csv'
-    try:
-        existing_df = pd.read_csv(csv_file_path)
-        updated_df = pd.concat([existing_df, df], ignore_index=True)
-    except FileNotFoundError:
-        updated_df = df
-    updated_df.to_csv(csv_file_path, index=False)
+    df = pd.json_normalize(hero_info)
+    if csv_file_path.exists():
+        df.to_csv(csv_file_path, mode='a', header=False, index=False)
+    else:
+        df.to_csv(csv_file_path, index=False)
