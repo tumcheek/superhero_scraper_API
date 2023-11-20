@@ -1,10 +1,11 @@
 from typing import Dict, Any
 import json
+from urllib.parse import urljoin
 import requests
 from config import BASE_URL, TOKEN
 
 
-def get_hero_by_id(hero_id: str) -> Dict[str, Any]:
+def get_hero_by_id(hero_id: int) -> Dict[str, Any]:
     """
     Retrieve hero information by ID from the specified API.
 
@@ -17,7 +18,7 @@ def get_hero_by_id(hero_id: str) -> Dict[str, Any]:
     Raises:
         requests.exceptions.HTTPError: If the API response indicates an error.
     """
-    request_url = f'{BASE_URL}{TOKEN}/{hero_id}'
+    request_url = urljoin(BASE_URL, f'{TOKEN}/{hero_id}')
     response = requests.get(request_url)
     response.raise_for_status()
     response_content = json.loads(response.content)
